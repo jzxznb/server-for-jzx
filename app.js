@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 const Koa = require('koa');
 const cors = require('koa2-cors');
-const gameRouter = require('./routes/JGame');
-// const testRouter = require('./routes/JTest');
+const { gameRouter } = require('./routes/JGame');
+const testRouter = require('./routes/JTest');
 
 const app = new Koa();
 
@@ -16,7 +16,7 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
 
-app.use(gameRouter.routes());
-// .use();
+app.use(gameRouter.routes())
+  .use(testRouter.routes());
 
 module.exports = app;
