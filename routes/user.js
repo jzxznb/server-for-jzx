@@ -5,6 +5,8 @@ const usrRouter = new Router({
 });
 
 usrRouter
-    .post('/login', async (ctx) => {});
+    .post('/login', async (ctx) => {
+        const { usrName, psWord } = ctx.request.body;
+    });
 
 module.exports = usrRouter;

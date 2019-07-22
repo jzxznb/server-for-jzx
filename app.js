@@ -3,9 +3,9 @@ const Koa = require('koa');
 const cors = require('koa2-cors');
 const {
     gameRouter,
-} = require('./routes/JGame');
-const usrRouter = require('./routes/JUser');
-const testRouter = require('./routes/JTest');
+} = require('./routes/game');
+const usrRouter = require('./routes/user');
+const testRouter = require('./routes/test');
 
 const app = new Koa();
 
