@@ -4,6 +4,7 @@ const cors = require('koa2-cors');
 const {
     gameRouter,
 } = require('./routes/JGame');
+const usrRouter = require('./routes/JUser');
 const testRouter = require('./routes/JTest');
 
 const app = new Koa();
@@ -19,6 +20,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(gameRouter.routes())
-    .use(testRouter.routes());
+    .use(testRouter.routes())
+    .use(usrRouter.routes());
 
 module.exports = app;

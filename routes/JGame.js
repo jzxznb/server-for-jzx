@@ -8,9 +8,6 @@ const gameRouter = new Router({
 gameRouter
     .get('/gamePrint', async (ctx) => {
         ctx.response.body = '这是JGame的测试';
-    })
-    .post('/userLogin', async (ctx) => {
-
     });
 
 const initIO = () => {
