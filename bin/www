@@ -8,7 +8,7 @@
 const debug = require('debug')('demo:server');
 const http = require('http');
 const app = require('../app');
-const { initIO } = require('../routes/JGame');
+const { initIO } = require('../routes/chat');
 
 /**
  * Get port from environment and store in Express.
