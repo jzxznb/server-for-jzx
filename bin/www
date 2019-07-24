@@ -8,7 +8,7 @@
 const debug = require('debug')('demo:server');
 const http = require('http');
 const app = require('../app');
-const { initIO } = require('../routes/chat');
+const { initIO } = require('../src/util');
 
 /**
  * Get port from environment and store in Express.
@@ -25,7 +25,6 @@ const server = http.createServer(app.callback());
 // eslint-disable-next-line import/order
 global.io = require('socket.io')(server);
 
-// 目前测试版，到时候登陆后再执行该方法
 initIO();
 
 /**
