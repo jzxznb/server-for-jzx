@@ -17,6 +17,11 @@ webRouter
             mTime: Number(new Date()),
         });
         ctx.response.body = res;
+    })
+    .post('/removeWeb', async (ctx) => {
+        const { webId } = ctx.request.body;
+        const res = await EditorModel.remove({ _id: webId });
+        if (res.ok) ctx.response.body = '删除成功';
     });
 
 module.exports = {
