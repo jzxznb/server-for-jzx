@@ -5,7 +5,7 @@ const {
     gameRouter,
 } = require('./routes/game');
 const usrRouter = require('./routes/user');
-const testRouter = require('./routes/test');
+const { chatRouter } = require('./routes/chat');
 
 const app = new Koa();
 
@@ -20,7 +20,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(gameRouter.routes())
-    .use(testRouter.routes())
-    .use(usrRouter.routes());
+    .use(usrRouter.routes())
+    .use(chatRouter.routes());
 
 module.exports = app;
