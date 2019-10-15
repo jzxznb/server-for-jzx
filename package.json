@@ -21,8 +21,12 @@
         "koa-views": "^6.2.0",
         "koa2-cors": "^2.0.6",
         "mongoose": "^5.6.5",
+        "plugins": "git+ssh://git@github.com/jzxznb/jzxznb.github.io.git",
         "pug": "^2.0.3",
-        "socket.io": "^2.2.0"
+        "react": "^16.10.2",
+        "react-dom": "^16.10.2",
+        "socket.io": "^2.2.0",
+        "stream-to-promise": "^2.2.0"
     },
     "devDependencies": {
         "eslint": "^5.16.0",

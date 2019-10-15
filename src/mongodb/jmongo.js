@@ -8,7 +8,7 @@ class MGDB {
         this.collectionName = collectionName;
         this.url = inUrl || url;
         this.model = mongoose.model(this.collectionName, this.schema);
-        mongoose.connect(this.url, { useNewUrlParser: true });
+        mongoose.connect(this.url, { useUnifiedTopology: true, useNewUrlParser: true });
     }
     /**
      * 插入一条数据

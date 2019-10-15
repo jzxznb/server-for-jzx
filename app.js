@@ -2,6 +2,7 @@
 const Koa = require('koa');
 const cors = require('koa2-cors');
 const bodyparser = require('koa-bodyparser');
+const cssStatic = require('koa-static');
 const { gameRouter } = require('./routes/game');
 const usrRouter = require('./routes/user');
 const { chatRouter } = require('./routes/chat');
@@ -12,6 +13,7 @@ const app = new Koa();
 
 app.use(cors());
 app.use(bodyparser());
+app.use(cssStatic('./node_modules/plugins/Container.css'));
 // logger
 app.use(async (ctx, next) => {
     const start = new Date();
