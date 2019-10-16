@@ -1,11 +1,11 @@
 const Router = require('koa-router');
 const fs = require('fs');
-const { EditorModel } = require('../src/model/webEditorV2');
+const { EditorModel } = require('../src/model/h5Editor');
 
 const htmlTemplate = fs.readFileSync('./ssrDist/ssrTemplate.html', 'utf-8');
 
 const webEditorV2 = new Router({
-    prefix: '/webEditorV2',
+    prefix: '/h5Editor',
 });
 // const FAILED = '失败,请联系阿星或稍后再试';
 webEditorV2
@@ -21,7 +21,9 @@ webEditorV2
     })
     .get('/getHomePage', async (ctx) => {
         try {
-            ctx.response.body = htmlTemplate;
+            const { pageId } = ctx.query;
+            const [res] = await EditorModel.find({ _id: pageId });
+            ctx.response.body = htmlTemplate.replace('默认网页名:阿星的模板页面', res.webName);
         } catch (er) {
             ctx.body = '请输入正确的网页id';
         }

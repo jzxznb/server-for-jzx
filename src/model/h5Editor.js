@@ -6,7 +6,7 @@ const webSchema = {
     mTime: Number,
 };
 
-const collectionName = 'webEditorV2';
+const collectionName = 'h5Editor';
 
 const EditorModel = MongoDB(webSchema, { collectionName });
 

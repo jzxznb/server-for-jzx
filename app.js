@@ -7,7 +7,7 @@ const { gameRouter } = require('./routes/game');
 const usrRouter = require('./routes/user');
 const { chatRouter } = require('./routes/chat');
 const { webRouter } = require('./routes/webEditor');
-const { webEditorV2 } = require('./routes/webEditorV2');
+const { h5Router } = require('./routes/h5Editor');
 
 const app = new Koa();
 
@@ -26,6 +26,6 @@ app.use(gameRouter.routes())
     .use(usrRouter.routes())
     .use(chatRouter.routes())
     .use(webRouter.routes())
-    .use(webEditorV2.routes());
+    .use(h5Router.routes());
 
 module.exports = app;
