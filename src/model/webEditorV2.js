@@ -1,7 +1,9 @@
 const { MongoDB } = require('../mongodb/jmongo');
 
 const webSchema = {
+    webName: String,
     body: Object,
+    mTime: Number,
 };
 
 const collectionName = 'webEditorV2';
