@@ -4,11 +4,11 @@ const { EditorModel } = require('../src/model/h5Editor');
 
 const htmlTemplate = fs.readFileSync('./ssrDist/ssrTemplate.html', 'utf-8');
 
-const webEditorV2 = new Router({
+const h5Router = new Router({
     prefix: '/h5Editor',
 });
 // const FAILED = '失败,请联系阿星或稍后再试';
-webEditorV2
+h5Router
     .post('/saveWebData', async (ctx) => {
         const { body, webName } = ctx.request.body;
         const res = await EditorModel.insert({ body, mTime: Number(new Date()), webName });
@@ -29,5 +29,5 @@ webEditorV2
         }
     });
 module.exports = {
-    webEditorV2,
+    h5Router,
 };
