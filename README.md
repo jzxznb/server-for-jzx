@@ -31,3 +31,5 @@ npm install
 ```
 npm start
 ```
+
+> h5Editor 每次更新完 component-for-jzx 需要执行命令 npm run build 来更新 ssr 的模板页面
