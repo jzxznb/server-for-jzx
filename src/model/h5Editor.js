@@ -2,7 +2,7 @@ const { MongoDB } = require('../mongodb/jmongo');
 
 const webSchema = {
     webName: String,
-    body: Object,
+    webData: Object,
     mTime: Number,
 };
 

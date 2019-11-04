@@ -9,25 +9,62 @@ const h5Router = new Router({
 });
 // const FAILED = '失败,请联系阿星或稍后再试';
 h5Router
-    .post('/getWebList', async (ctx) => {
+    .post('/getPageList', async (ctx) => {
         // 后续增加分页
         const res = await EditorModel.find({}, ['_id', 'mTime', 'webName']);
         ctx.response.body = res;
     })
-    .post('/saveWebData', async (ctx) => {
-        const { body, webName } = ctx.request.body;
-        const res = await EditorModel.insert({ body, mTime: Number(new Date()), webName });
-        ctx.response.body = res;
+    .post('/updatePage', async (ctx) => {
+        try {
+            const { webData, pageId } = ctx.request.body;
+            const res = await EditorModel.update({ _id: pageId }, {
+                webData,
+                mTime: Number(new Date()),
+            });
+            ctx.response.body = res;
+        } catch (err) {
+            ctx.response.body = {
+                code: 'error',
+                msg: '保存失败',
+            };
+        }
+    })
+    .post('/insertPage', async (ctx) => {
+        try {
+            const { webData } = ctx.request.body;
+            const res = await EditorModel.insert({ webData, mTime: Number(new Date()), webName: '新建默认页面' });
+            ctx.response.body = res;
+        } catch (err) {
+            ctx.response.body = {
+                code: 'error',
+                msg: '新建失败',
+            };
+        }
+    })
+    .post('/removePage', async (ctx) => {
+        try {
+            const { pageId } = ctx.request.body;
+            await EditorModel.remove({ _id: pageId });
+            ctx.response.body = {
+                code: 'success',
+                msg: '删除成功',
+            };
+        } catch (err) {
+            ctx.response.body = {
+                code: 'error',
+                msg: '删除失败',
+            };
+        }
     })
     .post('/getPageById', async (ctx) => {
         try {
             const { pageId } = ctx.request.body;
-            const [res] = await EditorModel.find({ _id: pageId }, ['body']);
+            const [res] = await EditorModel.find({ _id: pageId }, ['webData']);
             ctx.response.body = res;
         } catch (err) {
             ctx.response.body = {
-                body: null,
-                _id: '-1',
+                code: 'error',
+                msg: '获取页面失败',
             };
         }
     })
