@@ -26,9 +26,9 @@ class MGDB {
      * @param {*} o
      */
 
-    async find(o) {
+    async find(o, arr) {
         const filter = o || {};
-        const dataArr = await this.model.find(filter);
+        const dataArr = await this.model.find(filter, arr);
         return dataArr;
     }
     /**
