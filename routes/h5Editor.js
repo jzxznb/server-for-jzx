@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const fs = require('fs');
-const { EditorModel } = require('../src/model/h5Editor');
+const { EditorModel, CommentModel } = require('../src/model/h5Editor');
 
 const htmlTemplate = fs.readFileSync('./ssrDist/ssrTemplate.html', 'utf-8');
 
@@ -9,11 +9,37 @@ const h5Router = new Router({
 });
 // const FAILED = '失败,请联系阿星或稍后再试';
 h5Router
+    // 获取页面数据
     .post('/getPageList', async (ctx) => {
         // 后续增加分页
         const res = await EditorModel.find({}, ['_id', 'mTime', 'webName']);
         ctx.response.body = res;
     })
+    .post('/getPageById', async (ctx) => {
+        try {
+            const { pageId } = ctx.request.body;
+            const [res] = await EditorModel.find({ _id: pageId }, ['webData']);
+            ctx.response.body = res;
+        } catch (err) {
+            ctx.response.body = {
+                code: 'error',
+                msg: '获取页面失败',
+            };
+        }
+    })
+    .post('/getComment', async (ctx) => {
+        try {
+            const { pageId } = ctx.request.body;
+            const res = await CommentModel.find({ pageId }, ['sender', 'mTime', 'text', 'uid']);
+            ctx.response.body = res;
+        } catch (error) {
+            ctx.response.body = {
+                code: 'error',
+                msg: '获取评论失败',
+            };
+        }
+    })
+    // b端提交数据
     .post('/updatePage', async (ctx) => {
         try {
             const { webData, pageId } = ctx.request.body;
@@ -56,18 +82,31 @@ h5Router
             };
         }
     })
-    .post('/getPageById', async (ctx) => {
+    // c端提交数据
+    .post('/sendComment', async (ctx) => {
         try {
-            const { pageId } = ctx.request.body;
-            const [res] = await EditorModel.find({ _id: pageId }, ['webData']);
-            ctx.response.body = res;
+            const {
+                sender, text, pageId, uid,
+            } = ctx.request.body;
+            await CommentModel.insert({
+                sender,
+                text,
+                mTime: Number(new Date()),
+                pageId,
+                uid: uid || -1,
+            });
+            ctx.response.body = {
+                code: 'success',
+                msg: '提交评论成功',
+            };
         } catch (err) {
             ctx.response.body = {
                 code: 'error',
-                msg: '获取页面失败',
+                msg: '提交评论失败',
             };
         }
     })
+    // 页面渲染部分
     .get('/getHomePage', async (ctx) => {
         try {
             const { pageId } = ctx.query;
