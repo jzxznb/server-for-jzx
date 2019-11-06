@@ -6,10 +6,20 @@ const webSchema = {
     mTime: Number,
 };
 
-const collectionName = 'h5Editor';
+const commentSchema = {
+    sender: Object,
+    text: String,
+    pageId: String,
+    mTime: Number,
+    uid: Number,
+};
 
-const EditorModel = MongoDB(webSchema, { collectionName });
+const editorName = 'h5Editor';
+const commentName = 'h5Comment';
+const EditorModel = MongoDB(webSchema, { collectionName: editorName });
+const CommentModel = MongoDB(commentSchema, { collectionName: commentName });
 
 module.exports = {
     EditorModel,
+    CommentModel,
 };
