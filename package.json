@@ -30,7 +30,6 @@
         "react": "^16.10.2",
         "react-dom": "^16.10.2",
         "socket.io": "^2.2.0",
-        "stream-to-promise": "^2.2.0",
         "uglifyjs-webpack-plugin": "^2.2.0",
         "webpack-merge": "^4.2.2"
     },
