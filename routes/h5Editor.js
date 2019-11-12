@@ -18,7 +18,12 @@ h5Router
     .post('/getPageById', async (ctx) => {
         try {
             const { pageId } = ctx.request.body;
-            const [res] = await EditorModel.find({ _id: pageId }, ['webData']);
+            const [res] = await EditorModel.find(
+                {
+                    _id: pageId,
+                },
+                ['webData'],
+            );
             ctx.response.body = res;
         } catch (err) {
             ctx.response.body = {
@@ -30,7 +35,12 @@ h5Router
     .post('/getComment', async (ctx) => {
         try {
             const { pageId } = ctx.request.body;
-            const res = await CommentModel.find({ pageId }, ['sender', 'mTime', 'text', 'uid']);
+            const res = await CommentModel.find(
+                {
+                    pageId,
+                },
+                ['sender', 'mTime', 'text', 'uid'],
+            );
             ctx.response.body = res;
         } catch (error) {
             ctx.response.body = {
@@ -43,10 +53,15 @@ h5Router
     .post('/updatePage', async (ctx) => {
         try {
             const { webData, pageId } = ctx.request.body;
-            const res = await EditorModel.update({ _id: pageId }, {
-                webData,
-                mTime: Number(new Date()),
-            });
+            const res = await EditorModel.update(
+                {
+                    _id: pageId,
+                },
+                {
+                    webData,
+                    mTime: Number(new Date()),
+                },
+            );
             ctx.response.body = res;
         } catch (err) {
             ctx.response.body = {
@@ -58,7 +73,11 @@ h5Router
     .post('/insertPage', async (ctx) => {
         try {
             const { webData } = ctx.request.body;
-            const res = await EditorModel.insert({ webData, mTime: Number(new Date()), webName: '新建默认页面' });
+            const res = await EditorModel.insert({
+                webData,
+                mTime: Number(new Date()),
+                webName: '新建默认页面',
+            });
             ctx.response.body = res;
         } catch (err) {
             ctx.response.body = {
@@ -70,7 +89,9 @@ h5Router
     .post('/removePage', async (ctx) => {
         try {
             const { pageId } = ctx.request.body;
-            await EditorModel.remove({ _id: pageId });
+            await EditorModel.remove({
+                _id: pageId,
+            });
             ctx.response.body = {
                 code: 'success',
                 msg: '删除成功',
@@ -110,8 +131,13 @@ h5Router
     .get('/getHomePage', async (ctx) => {
         try {
             const { pageId } = ctx.query;
-            const [res] = await EditorModel.find({ _id: pageId });
-            ctx.response.body = htmlTemplate.replace('默认网页名:阿星的模板页面', res.webName);
+            const [res] = await EditorModel.find({
+                _id: pageId,
+            });
+            ctx.response.body = htmlTemplate.replace(
+                '默认网页名:阿星的模板页面',
+                res.webName,
+            );
         } catch (er) {
             ctx.body = '请输入正确的网页id';
         }
