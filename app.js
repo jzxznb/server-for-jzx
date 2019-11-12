@@ -5,6 +5,7 @@ const bodyparser = require('koa-bodyparser');
 const staticFile = require('koa-static');
 const { webRouter } = require('./routes/webEditor');
 const { h5Router } = require('./routes/h5Editor');
+const { shellRouter } = require('./routes/shell');
 
 const app = new Koa();
 
@@ -20,6 +21,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(webRouter.routes())
-    .use(h5Router.routes());
+    .use(h5Router.routes())
+    .use(shellRouter.routes());
 
 module.exports = app;
