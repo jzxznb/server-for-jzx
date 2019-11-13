@@ -7,22 +7,25 @@ const shellRouter = new Router({
     prefix: '/shell',
 });
 
-const rootPath = './';
+const rootPath = './../';
 
 const publish = {
-    page: 'mkdir testExe',
+    page: 'rm -rf editor-build \n git clone git@github.com:jzxznb/editor-build.git',
 };
 
 shellRouter.get('/publishPage', async (ctx) => {
     try {
         const files = fs.readdirSync(rootPath);
-        if (!files.includes('publishPage')) {
-            fs.writeFileSync(`${rootPath}publishPage.sh`, publish.page);
+        if (!files.includes('pull-editor')) {
+            fs.writeFileSync(`${rootPath}pull-editor.sh`, publish.page);
         }
-        const t = await exec('cd ../ | sh publishPage.sh');
+        const { stdout } = await exec(`cd ${rootPath} && sh pull-editor.sh`);
+        if (stdout) {
+            ctx.response.body = '发布成功';
+        }
     } catch (e) {
+        ctx.response.body = '发布失败';
     }
-    ctx.response.body = '123';
 });
 
 module.exports = {
