@@ -3,12 +3,12 @@ const { EditorModel } = require('../src/model/webEditor');
 const FileSystem = require('../src/fs/fileSystem');
 
 const webRouter = new Router({
-    prefix: '/webEditor',
+    prefix: '/webEditor'
 });
 
 const FAILED = '失败,请联系阿星或稍后再试';
 webRouter
-    .post('/getPageList', async (ctx) => {
+    .post('/getPageList', async ctx => {
         try {
             const res = await EditorModel.find();
             ctx.response.body = res;
@@ -16,19 +16,19 @@ webRouter
             ctx.response.body = e;
         }
     })
-    .post('/newEditor', async (ctx) => {
+    .post('/newEditor', async ctx => {
         try {
             const { webName } = ctx.request.body;
             const res = await EditorModel.insert({
                 webName,
-                mTime: Number(new Date()),
+                mTime: Number(new Date())
             });
             ctx.response.body = res;
         } catch (e) {
             ctx.response.body = e;
         }
     })
-    .post('/removeWeb', async (ctx) => {
+    .post('/removeWeb', async ctx => {
         const { webId } = ctx.request.body;
         const dbres = await EditorModel.remove({ _id: webId });
         new FileSystem('webFile').deleteFile(webId);
@@ -38,10 +38,13 @@ webRouter
             ctx.response.body = `删除${FAILED}`;
         }
     })
-    .post('/updateName', async (ctx) => {
+    .post('/updateName', async ctx => {
         try {
             const { webId, webName } = ctx.request.body;
-            const res = await EditorModel.update({ _id: webId }, { webName, mTime: Number(new Date()) });
+            const res = await EditorModel.update(
+                { _id: webId },
+                { webName, mTime: Number(new Date()) }
+            );
             if (res.ok === 1) {
                 ctx.response.body = '修改成功';
             } else {
@@ -51,7 +54,7 @@ webRouter
             ctx.response.body = e;
         }
     })
-    .post('/getPageData', async (ctx) => {
+    .post('/getPageData', async ctx => {
         try {
             const { _id } = ctx.request.body;
             const fsRes = new FileSystem('webFile').readFile(_id);
@@ -64,7 +67,7 @@ webRouter
             ctx.response.body = e;
         }
     })
-    .post('/saveWj', async (ctx) => {
+    .post('/saveWj', async ctx => {
         try {
             const { webJson, id } = ctx.request.body;
             const dbRes = await EditorModel.update({ _id: id }, { mTime: Number(new Date()) });
@@ -80,5 +83,5 @@ webRouter
     });
 
 module.exports = {
-    webRouter,
+    webRouter
 };

@@ -1,7 +1,11 @@
 const Router = require('koa-router');
 const fs = require('fs');
 const { EditorModel, CommentModel } = require('../src/model/h5Editor');
-// const serverEntry = require('../ssrConfig/entry-server');
+const {
+    serverRender,
+    streamToPromise,
+    renderToNodeStream
+} = require('../ssrDist/server/serverEntry');
 
 const htmlTemplate = fs.readFileSync('./ssrDist/client/ssrTemplate.html', 'utf-8');
 
@@ -131,8 +135,11 @@ h5Router
             const [res] = await EditorModel.find({
                 _id: pageId
             });
-
-            ctx.response.body = htmlTemplate.replace('默认网页名:阿星的模板页面', res.webName);
+            const ssrData = renderToNodeStream(serverRender(res.webData));
+            const data = await streamToPromise(ssrData);
+            ctx.response.body = htmlTemplate
+                .replace('默认网页名:阿星的模板页面', res.webName)
+                .replace('<!-- react--ssr--jzx--out--put -->', data.toString());
         } catch (er) {
             ctx.body = '请输入正确的网页id';
         }

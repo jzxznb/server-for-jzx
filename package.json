@@ -6,7 +6,8 @@
         "start": "nodemon bin/www",
         "serve": "npm run build &&  nodemon bin/www",
         "prd": "pm2 start bin/www",
-        "build": "rimraf ssrDist && npm run build:client",
+        "build": "rimraf ssrDist && npm run build:client && npm run build:server",
+        "build:server": "webpack --config ssrConfig/webpack.server.js",
         "build:client": "webpack --config ssrConfig/webpack.client.js"
     },
     "dependencies": {
@@ -33,6 +34,7 @@
         "react": "^16.10.2",
         "react-dom": "^16.10.2",
         "socket.io": "^2.2.0",
+        "stream-to-promise": "^2.2.0",
         "uglifyjs-webpack-plugin": "^2.2.0",
         "webpack-merge": "^4.2.2"
     },
