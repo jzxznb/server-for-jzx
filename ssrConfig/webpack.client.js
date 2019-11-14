@@ -8,7 +8,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         app: path.resolve(__dirname, './entry-client.js')
     },
     output: {
-        path: path.resolve(__dirname, '../ssrDist'),
+        path: path.resolve(__dirname, '../ssrDist/client'),
         filename: '[name].[chunkhash].js',
         publicPath: '/' // 打包后输出路径以/dist/开头
     },
