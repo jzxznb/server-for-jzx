@@ -4,9 +4,8 @@
     "private": true,
     "scripts": {
         "start": "nodemon bin/www",
-        "serve": "npm run build &&  nodemon bin/www",
         "prd": "pm2 start bin/www",
-        "build": "rimraf ssrDist && npm run build:client && npm run build:server",
+        "build": "rimraf ssrDist && MODE=production  npm run build:client && npm run build:server",
         "build:server": "webpack --config ssrConfig/webpack.server.js",
         "build:client": "webpack --config ssrConfig/webpack.client.js"
     },

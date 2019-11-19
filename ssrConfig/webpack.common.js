@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const baseWebpackConfig = {
+    mode: 'production',
     resolve: {
         extensions: ['.js', '.jsx', '.json']
     },
