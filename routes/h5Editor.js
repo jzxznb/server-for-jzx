@@ -75,6 +75,24 @@ h5Router
             };
         }
     })
+    .post('/updatePageName', async ctx => {
+        try {
+            const { pageId, webName } = ctx.request.body;
+            const res = await EditorModel.update({ _id: pageId }, { webName });
+            if (res.ok !== 1) {
+                throw Error('e');
+            }
+            ctx.response.body = {
+                code: 'success',
+                msg: '修改成功'
+            };
+        } catch (err) {
+            ctx.response.body = {
+                code: 'error',
+                msg: '修改失败'
+            };
+        }
+    })
     .post('/insertPage', async ctx => {
         try {
             const { webData } = ctx.request.body;
