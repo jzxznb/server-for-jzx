@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const fs = require('fs');
-const { EditorModel, CommentModel } = require('../src/model/h5Editor');
+const { EditorModel, CommentModel, DiaryModel } = require('../src/model/h5Editor');
 const {
     serverRender,
     streamToPromise,
@@ -51,6 +51,23 @@ h5Router
             ctx.response.body = {
                 code: 'error',
                 msg: '获取评论失败'
+            };
+        }
+    })
+    .post('/getDiaryData', async ctx => {
+        try {
+            const { keys = [], o } = ctx.request.body;
+            const res = await DiaryModel.find(
+                {
+                    ...o
+                },
+                keys
+            );
+            ctx.response.body = res;
+        } catch (err) {
+            ctx.response.body = {
+                code: 'error',
+                msg: '获取日记数据失败'
             };
         }
     })
@@ -143,6 +160,26 @@ h5Router
             ctx.response.body = {
                 code: 'error',
                 msg: '提交评论失败'
+            };
+        }
+    })
+    .post('/newDiary', async ctx => {
+        try {
+            const { pageId, catalog, text } = ctx.request.body;
+            await DiaryModel.insert({
+                pageId,
+                catalog,
+                text,
+                mTime: Number(new Date())
+            });
+            ctx.response.body = {
+                code: 'success',
+                msg: '发表成功'
+            };
+        } catch (err) {
+            ctx.response.body = {
+                code: 'error',
+                msg: '提交新日记失败'
             };
         }
     })
