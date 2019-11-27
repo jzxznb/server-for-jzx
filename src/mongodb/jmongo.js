@@ -26,10 +26,24 @@ class MGDB {
      * @param {*} o
      */
 
-    async find(o, arr) {
-        const filter = o || {};
-        const dataArr = await this.model.find(filter, arr);
-        return dataArr;
+    async find(o, arr, pageSize = 0, currentPage = 2, sort) {
+        try {
+            const filter = o || {};
+            const pro1 = this.model
+                .find(filter, arr)
+                .sort(sort)
+                .limit(pageSize)
+                .skip(currentPage * pageSize);
+            const pro2 = this.model.countDocuments(filter);
+            const [data, total] = await Promise.all([pro1, pro2]);
+            return {
+                data,
+                total
+            };
+        } catch (err) {
+            return Error('查询数据出错');
+        }
+        // return dataArr;
     }
     /**
      * 删除一条或多条记录
@@ -62,5 +76,5 @@ class MGDB {
 const MongoDB = (model, options) => new MGDB(model, options);
 
 module.exports = {
-    MongoDB,
+    MongoDB
 };

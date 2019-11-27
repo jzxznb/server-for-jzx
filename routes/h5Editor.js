@@ -23,13 +23,13 @@ h5Router
     .post('/getPageById', async ctx => {
         try {
             const { pageId } = ctx.request.body;
-            const [res] = await EditorModel.find(
+            const { data } = await EditorModel.find(
                 {
                     _id: pageId
                 },
                 ['webData']
             );
-            ctx.response.body = res;
+            [ctx.response.body] = data;
         } catch (err) {
             ctx.response.body = {
                 code: 'error',
@@ -39,14 +39,17 @@ h5Router
     })
     .post('/getComment', async ctx => {
         try {
-            const { pageId } = ctx.request.body;
-            const res = await CommentModel.find(
+            const { pageId, pageSize = 5, currentPage = 0 } = ctx.request.body;
+            const data = await CommentModel.find(
                 {
                     pageId
                 },
-                ['sender', 'mTime', 'text', 'uid']
+                ['sender', 'mTime', 'text', 'uid'],
+                pageSize,
+                currentPage,
+                { mTime: -1 }
             );
-            ctx.response.body = res;
+            ctx.response.body = data;
         } catch (error) {
             ctx.response.body = {
                 code: 'error',
@@ -56,14 +59,23 @@ h5Router
     })
     .post('/getDiaryData', async ctx => {
         try {
-            const { keys = [], o } = ctx.request.body;
-            const res = await DiaryModel.find(
+            const {
+                keys = [],
+                o,
+                pageSize = 0,
+                currentPage = 0,
+                sort = { mTime: -1 }
+            } = ctx.request.body;
+            const data = await DiaryModel.find(
                 {
                     ...o
                 },
-                keys
+                keys,
+                pageSize,
+                currentPage,
+                sort
             );
-            ctx.response.body = res;
+            ctx.response.body = data;
         } catch (err) {
             ctx.response.body = {
                 code: 'error',
