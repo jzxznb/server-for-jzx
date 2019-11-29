@@ -17,8 +17,8 @@ h5Router
     // 获取页面数据
     .post('/getPageList', async ctx => {
         // 后续增加分页
-        const res = await EditorModel.find({}, ['_id', 'mTime', 'webName']);
-        ctx.response.body = res;
+        const { data } = await EditorModel.find({}, ['_id', 'mTime', 'webName']);
+        ctx.response.body = data;
     })
     .post('/getPageById', async ctx => {
         try {
@@ -199,14 +199,14 @@ h5Router
     .get('/getHomePage', async ctx => {
         try {
             const { pageId } = ctx.query;
-            const [res] = await EditorModel.find({
+            const { data } = await EditorModel.find({
                 _id: pageId
             });
-            const ssrData = renderToNodeStream(serverRender(res.webData));
-            const data = await streamToPromise(ssrData);
+            const ssrData = renderToNodeStream(serverRender(data[0].webData));
+            const res = await streamToPromise(ssrData);
             ctx.response.body = htmlTemplate
                 .replace('默认网页名:阿星的模板页面', res.webName)
-                .replace('<!-- react--ssr--jzx--out--put -->', data.toString());
+                .replace('<!-- react--ssr--jzx--out--put -->', res.toString());
         } catch (er) {
             ctx.body = '请输入正确的网页id';
         }
