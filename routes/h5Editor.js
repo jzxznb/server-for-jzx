@@ -8,6 +8,9 @@ const {
 } = require('../ssrDist/server/serverEntry');
 
 const htmlTemplate = fs.readFileSync('./ssrDist/client/ssrTemplate.html', 'utf-8');
+global.location = {
+    origin: ''
+};
 
 const h5Router = new Router({
     prefix: '/h5Editor'
@@ -202,10 +205,11 @@ h5Router
             const { data } = await EditorModel.find({
                 _id: pageId
             });
-            const ssrData = renderToNodeStream(serverRender(data[0].webData));
+            const [pageInfo] = data;
+            const ssrData = renderToNodeStream(serverRender(pageInfo.webData));
             const res = await streamToPromise(ssrData);
             ctx.response.body = htmlTemplate
-                .replace('默认网页名:阿星的模板页面', res.webName)
+                .replace('默认网页名:阿星的模板页面', pageInfo.webName)
                 .replace('<!-- react--ssr--jzx--out--put -->', res.toString());
         } catch (er) {
             ctx.body = '请输入正确的网页id';
